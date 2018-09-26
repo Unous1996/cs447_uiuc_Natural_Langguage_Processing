@@ -50,5 +50,6 @@ if __name__ == "__main__":
     # Construct an FST for translating verb forms 
     # (Currently constructs a rudimentary, buggy FST; your task is to implement a better one.
     f = buildFST()
+    f.printFST()
     # Print out the FST translations of the input file
     f.parseInputFile(file)

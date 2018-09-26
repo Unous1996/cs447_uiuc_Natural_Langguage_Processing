@@ -47,7 +47,6 @@ def readFileToCorpus(f):
     #endif
 #enddef
 
-
 # Preprocess the corpus to help avoid sess the corpus to help avoid sparsity
 def preprocess(corpus):
     #find all the rare words
@@ -598,9 +597,22 @@ if __name__ == "__main__":
 
     # Run sample unigram dist code
     unigramDist = UnigramDist(trainCorpus)
+    UnigramModel = UnigramModel(trainCorpus)
+    SmoothedUnigramModel = SmoothedUnigramModel(trainCorpus)
+    BigramModel = BigramModel(trainCorpus)
+    SmoothedBigramModelAD = SmoothedBigramModelAD(trainCorpus)
+    SmoothedBigramModelKN = SmoothedBigramModelKN(trainCorpus)
+
+    UnigramModel.generateSentencesToFile(numberOfSentences=20, filename='unigram_output.txt')
+    SmoothedUnigramModel.generateSentencesToFile(numberOfSentences=20, filename='smooth_unigram_output.txt')
+    BigramModel.generateSentencesToFile(numberOfSentences=20, filename=' bigram_output.txt')
+    SmoothedBigramModelAD.generateSentencesToFile(numberOfSentences=20, filename='smooth_bigram_ad_output.txt')
+    SmoothedBigramModelKN.generateSentencesToFile(numberOfSentences=20, filename='and_smooth_bigram_kn_output.txt')
+    print('Finished')
+    '''
     print("Sample UnigramDist output:")
     print("Probability of \"vader\": ", unigramDist.prob("vader"))
     print("Probability of \""+UNK+"\": ", unigramDist.prob(UNK))
     print("\"Random\" draw: ", unigramDist.draw())
-
+    '''
 

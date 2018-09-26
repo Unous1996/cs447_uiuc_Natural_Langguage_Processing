@@ -125,8 +125,6 @@ class FSTstate:
             return (True, parses)
         else:
             return (False, None)
-                            
-
 
     def printState(self):
         if self.isFinal:
@@ -137,9 +135,6 @@ class FSTstate:
             transList = self.transitions[inString]
             for t in transList:
                 print("\t", inString, ":", t.string_out, " => ", t.state_out)
-
-                    
-
 
 class FST:
     def __init__(self, initialStateName="q0"):
