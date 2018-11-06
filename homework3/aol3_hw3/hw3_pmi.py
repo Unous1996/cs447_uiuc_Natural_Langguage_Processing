@@ -12,6 +12,7 @@ import os.path
 import sys
 import numpy as np
 import math
+from heapq import heappush, heappop
 from operator import itemgetter
 from collections import defaultdict
 
@@ -50,6 +51,7 @@ class PMI:
         self.num_of_sentences = len(corpus)
         self.occurance = np.zeros(shape=(len(corpus),40000))
         self.word_to_index = {}
+        self.index_to_word = {}
         self.column_sums = []
         self.__train()
         self.__trainColumnSum()
@@ -61,6 +63,7 @@ class PMI:
             for word in self.corpus[i]:
                 if word not in self.word_to_index.keys():
                     self.word_to_index[word] = count
+                    self.index_to_word[count] = word
                     count += 1
                     if count >= 40000:
                         self.occurance = np.c_[self.occurance,np.zeros(shape=(len(corpus),1))]
@@ -76,46 +79,75 @@ class PMI:
         #return math.log(np.sum(self.occurance[:,word_index]),2) - math.log(self.num_of_sentences,2)
         return math.log(self.column_sums[word_index], 2) - math.log(self.num_of_sentences, 2)
 
-    def __getLogProbDouble(self, word1, word2):
+    def __getLogProbDoubleBoolean(self, word1, word2):
         word_index1 = self.word_to_index[word1]
         word_index2 = self.word_to_index[word2]
         vector_1 = self.occurance[:,word_index1]
         vector_2 = self.occurance[:,word_index2]
-        word_1_occurance = []
-        word_2_occurance = []
-        word_co_occurance = []
-        for i in range(self.num_of_sentences):
-            if vector_1[i] == 1:
-                word_1_occurance.append(i)
-            if vector_2[i] == 1:
-                word_2_occurance.append(i)
-            if vector_1[i]*vector_2[i] == 1:
-                word_co_occurance.append(i)
         vector_3 = np.multiply(vector_1,vector_2)
-        temp_log = math.log(np.sum(vector_3),2)
-        return  temp_log - math.log(self.num_of_sentences,2)
+        temp_sum = np.sum(vector_3)
+        if temp_sum != 0:
+            temp_log = math.log(temp_sum,2)
+            valid = True
+            return  temp_log - math.log(self.num_of_sentences,2), valid
+        else:
+            valid = False
+            return 0, valid
 
     # Return the pointwise mutual information (based on sentence (co-)occurrence frequency) for w1 and w2
     def getPMI(self, w1, w2):
         word_pair = self.pair(w1=w1, w2=w2)
-        log_prob1 = self.__getLogProbDouble(word1=word_pair[0], word2=word_pair[1])
+        log_prob1 = self.__getLogProbDoubleBoolean(word1=word_pair[0], word2=word_pair[1])
         log_prob2 = self.__getLogProbSingle(word=word_pair[0])
         log_prob3 = self.__getLogProbSingle(word=word_pair[1])
-        log_result = log_prob1 - log_prob2 - log_prob3
+        log_result = log_prob1[0] - log_prob2 - log_prob3
         return log_result
+
+    def getPMI_valid(self, w1, w2):
+        word_pair = self.pair(w1=w1, w2=w2)
+        log_prob1 = self.__getLogProbDoubleBoolean(word1=word_pair[0], word2=word_pair[1])
+        log_prob2 = self.__getLogProbSingle(word=word_pair[0])
+        log_prob3 = self.__getLogProbSingle(word=word_pair[1])
+        if log_prob1[1]:
+            log_result = log_prob1[0] - log_prob2 - log_prob3
+            return log_result, log_prob1[1]
+        else:
+            return [0, log_prob1[1]]
 
     # Given a frequency cutoff k, return the list of observed words that appear in at least k sentences
     def getVocabulary(self, k):
-        print("\nSubtask 2: return the list of words where a word is in the list iff it occurs in at least k sentences")
-        return ["the", "a", "to", "of", "in"]
+        return_list = []
+        for i in range(len(self.column_sums)):
+            if self.column_sums[i] >= k:
+                return_list.append(self.index_to_word[i])
+        return return_list
+        #print("\nSubtask 2: return the list of words where a word is in the list iff it occurs in at least k sentences")
+        #return ["the", "a", "to", "of", "in"]
 
     # Given a list of words and a number N, return a list of N pairs of words that have the highest PMI
     # (without repeated pairs, and without duplicate pairs (wi, wj) and (wj, wi)).
     # Each entry in the list should be a triple (pmiValue, w1, w2), where pmiValue is the
     # PMI of the pair of words (w1, w2)
     def getPairsWithMaximumPMI(self, words, N):
-        print("\nSubtask 3: given a list of words and a number N, find N pairs of words with the greatest PMI")
-        return [(1.0, "foo", "bar")]
+        heap = []
+        return_list = []
+        for i in range(len(words)):
+            for j in range(i+1, len(words)):
+                word_pair = self.pair(w1=words[i], w2=words[j])
+                pmi_tuple = self.getPMI_valid(w1=words[i], w2=words[j])
+                if pmi_tuple[1]:
+                    heap_item = (-pmi_tuple[0], (word_pair[0], word_pair[1]))
+                    heappush(heap, heap_item)
+
+        for i in range(N):
+            heap_item = heappop(heap)
+            tuple_item = (-heap_item[0], heap_item[1][0], heap_item[1][1])
+            return_list.append(tuple_item)
+
+        return return_list
+
+        #print("\nSubtask 3: given a list of words and a number N, find N pairs of words with the greatest PMI")
+        #return [(1.0, "foo", "bar")]
 
     #-------------------------------------------
     # Provided PMI methods
