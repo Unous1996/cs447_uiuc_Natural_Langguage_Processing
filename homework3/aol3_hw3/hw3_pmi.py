@@ -10,6 +10,8 @@
 ##
 import os.path
 import sys
+import numpy as np
+import math
 from operator import itemgetter
 from collections import defaultdict
 
@@ -45,12 +47,55 @@ class PMI:
     # Given a corpus of sentences, store observations so that PMI can be calculated efficiently
     def __init__(self, corpus):
         self.corpus = corpus
+        self.num_of_sentences = len(corpus)
+        self.occurance = np.zeros(shape=(len(corpus),40000))
+        self.word_to_index = {}
+        self.__train()
         print("\nYour task is to add the data structures and implement the methods necessary to efficiently get the pairwise PMI of words from a corpus")
+
+    def __train(self):
+        count = 0
+        for i in range(len(self.corpus)):
+            for word in self.corpus[i]:
+                if word not in self.word_to_index.keys():
+                    self.word_to_index[word] = count
+                    count += 1
+                    if count >= 40000:
+                        self.occurance = np.c_[self.occurance,np.zeros(shape=(len(corpus),1))]
+                word_index = self.word_to_index[word]
+                self.occurance[i][word_index] = max(self.occurance[i][word_index], 1)
+
+    def __getLogProbSingle(self, word):
+        word_index = self.word_to_index[word]
+        return math.log(np.sum(self.occurance[:,word_index]),2) - math.log(self.num_of_sentences,2)
+
+    def __getLogProbDouble(self, word1, word2):
+        word_index1 = self.word_to_index[word1]
+        word_index2 = self.word_to_index[word2]
+        vector_1 = self.occurance[:,word_index1]
+        vector_2 = self.occurance[:,word_index2]
+        word_1_occurance = []
+        word_2_occurance = []
+        word_co_occurance = []
+        for i in range(self.num_of_sentences):
+            if vector_1[i] == 1:
+                word_1_occurance.append(i)
+            if vector_2[i] == 1:
+                word_2_occurance.append(i)
+            if vector_1[i]*vector_2[i] == 1:
+                word_co_occurance.append(i)
+        vector_3 = np.multiply(vector_1,vector_2)
+        temp_log = math.log(np.sum(vector_3),2)
+        return  temp_log - math.log(self.num_of_sentences,2)
 
     # Return the pointwise mutual information (based on sentence (co-)occurrence frequency) for w1 and w2
     def getPMI(self, w1, w2):
-        print("\nSubtask 1: calculate the PMI for a pair of words")
-        return float('-inf')
+        word_pair = self.pair(w1=w1, w2=w2)
+        log_prob1 = self.__getLogProbDouble(word1=word_pair[0], word2=word_pair[1])
+        log_prob2 = self.__getLogProbSingle(word=word_pair[0])
+        log_prob3 = self.__getLogProbSingle(word=word_pair[1])
+        log_result = log_prob1 - log_prob2 - log_prob3
+        return log_result
 
     # Given a frequency cutoff k, return the list of observed words that appear in at least k sentences
     def getVocabulary(self, k):
