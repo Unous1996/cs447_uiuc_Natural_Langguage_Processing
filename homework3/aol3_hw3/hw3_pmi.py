@@ -50,7 +50,9 @@ class PMI:
         self.num_of_sentences = len(corpus)
         self.occurance = np.zeros(shape=(len(corpus),40000))
         self.word_to_index = {}
+        self.column_sums = []
         self.__train()
+        self.__trainColumnSum()
         print("\nYour task is to add the data structures and implement the methods necessary to efficiently get the pairwise PMI of words from a corpus")
 
     def __train(self):
@@ -65,9 +67,14 @@ class PMI:
                 word_index = self.word_to_index[word]
                 self.occurance[i][word_index] = max(self.occurance[i][word_index], 1)
 
+    def __trainColumnSum(self):
+        for i in range(len(self.word_to_index)):
+            self.column_sums.append(np.sum(self.occurance[:,i]))
+
     def __getLogProbSingle(self, word):
         word_index = self.word_to_index[word]
-        return math.log(np.sum(self.occurance[:,word_index]),2) - math.log(self.num_of_sentences,2)
+        #return math.log(np.sum(self.occurance[:,word_index]),2) - math.log(self.num_of_sentences,2)
+        return math.log(self.column_sums[word_index], 2) - math.log(self.num_of_sentences, 2)
 
     def __getLogProbDouble(self, word1, word2):
         word_index1 = self.word_to_index[word1]
