@@ -33,7 +33,6 @@ class Rule:
 A UnaryRule has a probability, a parent category, and a child category/word
 '''
 
-
 class UnaryRule(Rule):
 
     def __init__(self, probability, parent, child):
@@ -66,7 +65,7 @@ An Item stores the label and Viterbi probability for a node in a parse tree
 
 class Item:
     def __init__(self, label, prob, numParses):
-        self.label = label
+        self.label = label #key
         self.prob = prob
         self.numParses = numParses
 
@@ -78,7 +77,6 @@ class Item:
 A LeafItem is an Item that represents a leaf (word) in the parse tree (ie, it
 doesn't have children, and it has a Viterbi probability of 1.0)
 '''
-
 
 class LeafItem(Item):
 
@@ -103,6 +101,7 @@ class InternalItem(Item):
         self.numParses = -1  # dummy numParses value; this should not be -1!
         if len(self.children) > 2:
             print("Warning: adding a node with more than two children (CKY may not work correctly)")
+            #is it the maximum child? / the best backtracking pointer
 
     # For an internal node, we want to recurse through the labels of the
     # subtree rooted at this node
@@ -121,19 +120,26 @@ Your task is to implement the stubs provided in this class
 class Cell:
 
     def __init__(self):
-        self.items = {}
+        self.dict_items = {}
 
     def addItem(self, item):
         # Add an Item to this cell
-        pass
+        # If the parent(label) is different, we just add the item,
+        # however, if the parent is the same, we need to
+        # a. compare the probability
+        # b. modify the backward pointer(children)
+        if item.label not in self.dict_items.keys():
+            self.dict_items[item.label] = item
+        else:
+            original_item = self.dict_items[item.label]
+            if item.prob > original_item.prob:
+                self.dict_items[item.label] = item
 
     def getItem(self, label):
-        # Return the cell Item with the given label
-        pass
+        return self.dict_items[label]
 
     def getItems(self):
-        # Return the items in this cell
-        pass
+        return self.dict_items.values()
 
 '''
 A Chart stores a Cell for every possible (contiguous) span of a sentence
@@ -146,22 +152,40 @@ class Chart:
 
     def __init__(self, sentence):
         # Initialize the chart, given a sentence
-        pass
+        self.words =sentence
+        self.cells = [[ Cell() for j in range(len(self.words)+1)] for i in range(len(self.words))]
 
     def getRoot(self):
-        # Return the item from the top cell in the chart with
-        # the label TOP
-        pass
+        #return the maximum probability item
+        critical_cell = self.cells[0][len(self.words)-1]
+        mark = False
+        max_item = None
+        for item in critical_cell.dict_items:
+            if not mark:
+                mark = True
+                max_item = item
+            else:
+                if item.prob > max_item.prob:
+                    max_item = item
+        return max_item
 
     def getCell(self, i, j):
-        # Return the chart cell at position i, j
-        pass
+        critical_cell = self.cells[i][j]
+        mark = False
+        max_item = None
+        for item in critical_cell.dict_items:
+            if not mark:
+                mark = True
+                max_item = item
+            else:
+                if item.prob > max_item.prob:
+                    max_item = item
+        return max_item
 
 '''
 A PCFG stores grammatical rules (with probabilities), and can be used to
 produce a Viterbi parse for a sentence if one exists
 '''
-
 
 class PCFG:
 
@@ -218,14 +242,27 @@ class PCFG:
 
     def CKY(self, sentence):
         # dummy return value:
-        return InternalItem("Implement your CKY algorithm!", float('-inf'), ())
+        CKY_chart = Chart(sentence)
+        for j in range(len(sentence)):
+            for rule in self.ckyRules[(sentence[j],)]:
+                CKY_chart.cells[j - 1][j].addItem(Item(label=rule.parent, prob=rule.prob, numParses=-1))
+            for i in range(j-2,-1,-1):
+                for k in range(i+1, j):
+                    for rhs in self.ckyRules:
+                        for rule in self.ckyRules[rhs]:
+                            if len(rhs) == 2:
+                                if rule.leftChild in CKY_chart.cells[i][k].dict_items.keys() and rule.rightChild in CKY_chart.cells[k][j].dict_items.keys():
+                                    left_prob = CKY_chart.cells[i][k].dict_items[rule.leftChild].prob
+                                    right_prob = CKY_chart.cells[k][j].dict_items[rule.rightChild].prob
+                                    CKY_chart.cells[i][j].addItem(InternalItem(category=rule.parent, prob=rule.prob + left_prob + right_prob, children=(rule.leftChild, rule.rightChild)))
+        return CKY_chart.getRoot()
 
 
 if __name__ == "__main__":
     pcfg = PCFG('toygrammar.pcfg')
     sen = "the man eats the tuna with a fork and some sushi with the chopsticks".split()
-
     tree = pcfg.CKY(sen)
+
     if tree is not None:
         print(tree.toString())
         print("Probability: " + str(math.exp(tree.prob)))
