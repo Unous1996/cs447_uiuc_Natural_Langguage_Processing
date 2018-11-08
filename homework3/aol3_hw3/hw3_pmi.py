@@ -180,4 +180,4 @@ if __name__ == "__main__":
     # for k in 2, 5, 10, 50, 100, 200:
     commonWords = pmi.getVocabulary(k)    # words must appear in least k sentences
     wordPairsWithGreatestPMI = pmi.getPairsWithMaximumPMI(commonWords, numPairs)
-    pmi.writePairsToFile(wordPairsWithGreatestPMI, "pairs_minFreq="+str(k)+".txt")
+    pmi.writePairsToFile(numPairs, wordPairsWithGreatestPMI, "pairs_minFreq="+str(k)+".txt")

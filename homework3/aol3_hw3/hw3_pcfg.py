@@ -99,7 +99,9 @@ class InternalItem(Item):
         # Your task is to update the number of parses for this InternalItem
         # to reflect how many possible parses are rooted at this label
         # for the string spanned by this item in a chart
-        self.numParses = -1 # dummy numParses value; this should not be -1!
+        self.numParses = 1 # dummy numParses value; this should not be -1!
+        for child in self.children:
+            self.numParses *= child.numParses
         if len(self.children) > 2:
             print("Warning: adding a node with more than two children (CKY may not work correctly)")
             #is it the maximum child? / the best backtracking pointer
@@ -154,7 +156,7 @@ class Chart:
     def __init__(self, sentence):
         # Initialize the chart, given a sentence
         self.words =sentence
-        self.cells = [[ Cell() for j in range(len(self.words))] for i in range(len(self.words))]
+        self.cells = [[ Cell() for j in range(len(self.words))] for i in range(len(self.words)+1)]
         self.supercell = Cell()
 
     def getRoot(self):
@@ -249,7 +251,9 @@ class PCFG:
         CKY_chart = Chart(sentence)
         for j in range(0,len(sentence)):
             for rule in self.ckyRules[(sentence[j],)]:
-                CKY_chart.cells[j][j].addItem(Item(label=rule.parent, prob=rule.prob, numParses=-1))
+                CKY_chart.cells[j+1][j].addItem(LeafItem(word=rule.child))
+                child_tuple = (CKY_chart.cells[j+1][j].dict_items[rule.child],)
+                CKY_chart.cells[j][j].addItem(InternalItem(category=rule.parent, prob=rule.prob,children=child_tuple))
             for i in range(j-1,-1,-1):
                 for k in range(i, j):
                     for rhs in self.ckyRules:
@@ -258,14 +262,16 @@ class PCFG:
                                 if rule.leftChild in CKY_chart.cells[i][k].dict_items.keys() and rule.rightChild in CKY_chart.cells[k+1][j].dict_items.keys():
                                     left_prob = CKY_chart.cells[i][k].dict_items[rule.leftChild].prob
                                     right_prob = CKY_chart.cells[k+1][j].dict_items[rule.rightChild].prob
-                                    CKY_chart.cells[i][j].addItem(InternalItem(category=rule.parent, prob=rule.prob + left_prob + right_prob, children=(rule.leftChild, rule.rightChild)))
+                                    child_tuple = (CKY_chart.cells[i][k].dict_items[rule.leftChild], CKY_chart.cells[k+1][j].dict_items[rule.rightChild])
+                                    CKY_chart.cells[i][j].addItem(InternalItem(category=rule.parent, prob=rule.prob + left_prob + right_prob, children=child_tuple))
 
         for rhs in self.ckyRules:
             for rule in self.ckyRules[rhs]:
                 if rule.parent == 'TOP' and len(rhs) == 1:
                     if rule.child in CKY_chart.cells[0][len(sentence)-1].dict_items.keys():
                         child_prob = CKY_chart.cells[0][len(sentence)-1].dict_items[rule.child].prob
-                        CKY_chart.supercell.addItem(InternalItem(category=rule.parent, prob=child_prob + rule.prob, children=(rule.child,)))
+                        child_tuple = (CKY_chart.cells[0][len(sentence)-1].dict_items[rule.child],)
+                        CKY_chart.supercell.addItem(InternalItem(category=rule.parent, prob=child_prob + rule.prob, children=child_tuple))
 
 
         return CKY_chart.getRoot()
