@@ -102,6 +102,7 @@ class InternalItem(Item):
         self.numParses = 1 # dummy numParses value; this should not be -1!
         for child in self.children:
             self.numParses *= child.numParses
+
         if len(self.children) > 2:
             print("Warning: adding a node with more than two children (CKY may not work correctly)")
             #is it the maximum child? / the best backtracking pointer
@@ -135,8 +136,16 @@ class Cell:
             self.dict_items[item.label] = item
         else:
             original_item = self.dict_items[item.label]
+            original_parses = original_item.numParses
+            newcoming_parses = item.numParses
             if item.prob > original_item.prob:
                 self.dict_items[item.label] = item
+                item.numParses = original_parses + newcoming_parses
+            else:
+                original_item.numParses = original_parses + newcoming_parses
+
+    def addLeafItem(self, item):
+        self.dict_items[item.label] = item
 
     def getItem(self, label):
         return self.dict_items[label]
@@ -251,7 +260,7 @@ class PCFG:
         CKY_chart = Chart(sentence)
         for j in range(0,len(sentence)):
             for rule in self.ckyRules[(sentence[j],)]:
-                CKY_chart.cells[j+1][j].addItem(LeafItem(word=rule.child))
+                CKY_chart.cells[j+1][j].addLeafItem(LeafItem(word=rule.child))
                 child_tuple = (CKY_chart.cells[j+1][j].dict_items[rule.child],)
                 CKY_chart.cells[j][j].addItem(InternalItem(category=rule.parent, prob=rule.prob,children=child_tuple))
             for i in range(j-1,-1,-1):
@@ -279,7 +288,7 @@ class PCFG:
 
 if __name__ == "__main__":
     pcfg = PCFG('toygrammar.pcfg')
-    sen = "the man eats the tuna with a fork and some sushi with the chopsticks".split()
+    sen = "the man eats the sushi".split()
     tree = pcfg.CKY(sen)
 
     if tree is not None:
