@@ -17,8 +17,8 @@
             <file leaf-file-name="toygrammar.pcfg" pinned="false" current-in-tab="true">
               <entry file="file://$PROJECT_DIR$/toygrammar.pcfg">
                 <provider selected="true" editor-type-id="text-editor">
-                  <state relative-caret-position="420">
-                    <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+                  <state relative-caret-position="135">
+                    <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
                     <folding />
                   </state>
                 </provider>
@@ -34,7 +34,7 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="hw3_pcfg_test.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="hw3_pcfg_test.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hw3_pcfg_test.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="675">
@@ -59,8 +59,8 @@
       <file leaf-file-name="hw3_pmi.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/hw3_pmi.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1805">
-              <caret line="182" column="35" lean-forward="false" selection-start-line="182" selection-start-column="35" selection-end-line="182" selection-end-column="35" />
+            <state relative-caret-position="2715">
+              <caret line="181" column="31" lean-forward="false" selection-start-line="181" selection-start-column="31" selection-end-line="181" selection-end-column="31" />
               <folding>
                 <element signature="e#337#351#0" expanded="true" />
               </folding>
@@ -68,11 +68,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="hw3_pcfg.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="hw3_pcfg.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/hw3_pcfg.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="258" column="29" lean-forward="true" selection-start-line="258" selection-start-column="29" selection-end-line="258" selection-end-column="29" />
+            <state relative-caret-position="30">
+              <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
               <folding>
                 <element signature="e#4635#4775#1" expanded="false" />
               </folding>
@@ -92,8 +92,8 @@
       <find>Chart</find>
       <find>rule</find>
       <find>toString</find>
-      <find>numPairs</find>
       <find>LeafItem</find>
+      <find>numPairs</find>
     </findStrings>
     <replaceStrings>
       <replace />
@@ -103,8 +103,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/pcfg_test_gold.txt" />
-        <option value="$PROJECT_DIR$/hw3_pmi.py" />
         <option value="$PROJECT_DIR$/hw3_pcfg.py" />
+        <option value="$PROJECT_DIR$/hw3_pmi.py" />
       </list>
     </option>
   </component>
@@ -168,7 +168,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.hw3_pcfg_test">
+  <component name="RunManager" selected="Python.pmi_sanity_check">
     <configuration name="hw3_pcfg" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -245,10 +245,10 @@
     </list>
     <recent_temporary>
       <list size="4">
-        <item index="0" class="java.lang.String" itemvalue="Python.hw3_pcfg_test" />
-        <item index="1" class="java.lang.String" itemvalue="Python.hw3_pcfg" />
-        <item index="2" class="java.lang.String" itemvalue="Python.hw3_pmi" />
-        <item index="3" class="java.lang.String" itemvalue="Python.pmi_sanity_check" />
+        <item index="0" class="java.lang.String" itemvalue="Python.pmi_sanity_check" />
+        <item index="1" class="java.lang.String" itemvalue="Python.hw3_pmi" />
+        <item index="2" class="java.lang.String" itemvalue="Python.hw3_pcfg_test" />
+        <item index="3" class="java.lang.String" itemvalue="Python.hw3_pcfg" />
       </list>
     </recent_temporary>
   </component>
@@ -272,7 +272,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12222222" sideWeight="0.73731345" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39882353" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39882353" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -568,16 +568,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw3_pmi.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1805">
-          <caret line="182" column="35" lean-forward="false" selection-start-line="182" selection-start-column="35" selection-end-line="182" selection-end-column="35" />
-          <folding>
-            <element signature="e#337#351#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pcfg_test_gold.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -586,12 +576,20 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw3_pcfg.py">
+    <entry file="file://$PROJECT_DIR$/toygrammar.pcfg">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="258" column="29" lean-forward="true" selection-start-line="258" selection-start-column="29" selection-end-line="258" selection-end-column="29" />
+        <state relative-caret-position="135">
+          <caret line="9" column="16" lean-forward="true" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3_pmi.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2715">
+          <caret line="181" column="31" lean-forward="false" selection-start-line="181" selection-start-column="31" selection-end-line="181" selection-end-column="31" />
           <folding>
-            <element signature="e#4635#4775#1" expanded="false" />
+            <element signature="e#337#351#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -606,11 +604,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/toygrammar.pcfg">
+    <entry file="file://$PROJECT_DIR$/hw3_pcfg.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="0" lean-forward="true" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
-          <folding />
+        <state relative-caret-position="30">
+          <caret line="2" column="10" lean-forward="true" selection-start-line="2" selection-start-column="10" selection-end-line="2" selection-end-column="10" />
+          <folding>
+            <element signature="e#4635#4775#1" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

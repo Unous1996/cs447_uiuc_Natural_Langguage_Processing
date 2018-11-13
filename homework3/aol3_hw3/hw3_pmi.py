@@ -98,6 +98,8 @@ class PMI:
     def getPMI(self, w1, w2):
         word_pair = self.pair(w1=w1, w2=w2)
         log_prob1 = self.__getLogProbDoubleBoolean(word1=word_pair[0], word2=word_pair[1])
+        if not log_prob1[1]:
+            return -float('inf')
         log_prob2 = self.__getLogProbSingle(word=word_pair[0])
         log_prob3 = self.__getLogProbSingle(word=word_pair[1])
         log_result = log_prob1[0] - log_prob2 - log_prob3
@@ -177,7 +179,9 @@ if __name__ == "__main__":
     print("  PMI of \"luke\" and \"vader\": ", lv_pmi)
     numPairs = 100
     k = 200
-    # for k in 2, 5, 10, 50, 100, 200:
-    commonWords = pmi.getVocabulary(k)    # words must appear in least k sentences
-    wordPairsWithGreatestPMI = pmi.getPairsWithMaximumPMI(commonWords, numPairs)
-    pmi.writePairsToFile(numPairs, wordPairsWithGreatestPMI, "pairs_minFreq="+str(k)+".txt")
+    for k in 200,100,50,10,5,2:
+        print("k=",k)
+        commonWords = pmi.getVocabulary(k)    # words must appear in least k sentences
+        wordPairsWithGreatestPMI = pmi.getPairsWithMaximumPMI(commonWords, numPairs)
+        pmi.writePairsToFile(numPairs, wordPairsWithGreatestPMI, "pairs_minFreq="+str(k)+".txt")
+    print("END")
