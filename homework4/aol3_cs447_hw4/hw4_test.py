@@ -10,7 +10,7 @@ with open('./gold_alignments.txt','r') as gold_f:
 
 model = IBMModel1('./eng-spa_small.txt')
 
-model.trainUsingEM(20)
+model.trainUsingEM(20, writeModel=True)
 print(model.getTranslationLengthProbability(14,12))
 
 correct = 0

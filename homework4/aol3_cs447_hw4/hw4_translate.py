@@ -191,6 +191,22 @@ class IBMModel1:
         lengthFile = open(filename+'_lengthprobs.txt', 'w')         # Write q(m|n) for all m,n to this file
         translateProbFile = open(filename+'_translationprobs.txt', 'w') # Write p(f_j | e_i) for all f_j, e_i to this file
         # Implement this method (make your output legible and informative)
+        # length_chart = self.length_dict
+        # Modifying length_dict
+
+        for n in self.length_dict:
+            string = ""
+            for m in self.length_dict.keys():
+                temp_log_prob = self.getTranslationLengthProbability(fLength=m, tLength=n)
+                string += "Pr (m = {0} | n = {1}) = {2} ".format(m, n, math.exp(temp_log_prob))
+            lengthFile.write(string)
+
+        for e_i in self.prob_trans.keys():
+            string = ""
+            for f_j in self.prob_trans[e_i].keys():
+                temp_log_prob = self.getWordTranslationProbability(f_j=f_j, e_i=e_i)
+                string += "Pr (f_y = {0} | e_x = {1} = {2} ) = ".format(f_j, e_i, math.exp(temp_log_prob))
+            translateProbFile.write(string)
 
         lengthFile.close();
         translateProbFile.close()
