@@ -210,9 +210,9 @@ class IBMModel1:
         for e_i in self.prob_trans.keys():
             string = ""
             for f_j in self.prob_trans[e_i].keys():
-                temp_prob = math.exp(self.getWordTranslationProbability(f_j=f_j, e_i=e_i))
-                if temp_prob > 0:
-                    string += "Pr (f_y = {0} | e_x = {1}) = {2} ".format(f_j, e_i, round(temp_prob,2))
+                temp_prob = round(math.exp(self.getWordTranslationProbability(f_j=f_j, e_i=e_i)), 2)
+                if temp_prob > 0.005:
+                    string += "Pr (f_y = {0} | e_x = {1}) = {2} ".format(f_j, e_i, temp_prob)
             translateProbFile.write(string)
             translateProbFile.write('\n')
             translateProbFile.write('****************************************************************')
