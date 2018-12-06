@@ -172,7 +172,10 @@ class IBMModel1:
     # (Can either return log probability or regular probability)
     def getTranslationLengthProbability(self, fLength, tLength):
         # Implement this method
-        return -math.log(len(self.length_dict[tLength]))
+        if fLength in self.length_dict[tLength]:
+            return -math.log(len(self.length_dict[tLength]))
+        else:
+            return -float('inf')
 
     # Return p(f_j | e_i), the probability that English word e_i generates non-English word f_j
     # (Can either return log probability or regular probability)
@@ -197,18 +200,25 @@ class IBMModel1:
         for n in self.length_dict:
             string = ""
             for m in self.length_dict.keys():
-                temp_log_prob = self.getTranslationLengthProbability(fLength=m, tLength=n)
-                string += "Pr (m = {0} | n = {1}) = {2} ".format(m, n, math.exp(temp_log_prob))
+                temp_prob = math.exp(self.getTranslationLengthProbability(fLength=m, tLength=n))
+                if temp_prob > 0:
+                    string += "Pr (m = {0} | n = {1}) = {2} ".format(m, n, round(temp_prob,2))
             lengthFile.write(string)
+            lengthFile.write('\n')
+            lengthFile.write('\n')
 
         for e_i in self.prob_trans.keys():
             string = ""
             for f_j in self.prob_trans[e_i].keys():
-                temp_log_prob = self.getWordTranslationProbability(f_j=f_j, e_i=e_i)
-                string += "Pr (f_y = {0} | e_x = {1} = {2} ) = ".format(f_j, e_i, math.exp(temp_log_prob))
+                temp_prob = math.exp(self.getWordTranslationProbability(f_j=f_j, e_i=e_i))
+                if temp_prob > 0:
+                    string += "Pr (f_y = {0} | e_x = {1}) = {2} ".format(f_j, e_i, round(temp_prob,2))
             translateProbFile.write(string)
+            translateProbFile.write('\n')
+            translateProbFile.write('****************************************************************')
+            translateProbFile.write('\n')
 
-        lengthFile.close();
+        lengthFile.close()
         translateProbFile.close()
 
 # utility method to pretty-print an alignment
