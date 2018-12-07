@@ -1,5 +1,5 @@
 Pr (f_y = . | e_x = NULL) = 0.71 Pr (f_y = , | e_x = NULL) = 0.01 Pr (f_y = ¿ | e_x = NULL) = 0.06 Pr (f_y = ? | e_x = NULL) = 0.2 Pr (f_y = de | e_x = NULL) = 0.01 
-****************************************************************
+****************************************************************  
 Pr (f_y = No | e_x = Don') = 0.98 Pr (f_y = suelten | e_x = Don') = 0.01 
 ****************************************************************
 Pr (f_y = No | e_x = t) = 0.64 Pr (f_y = no | e_x = t) = 0.35 
@@ -1124,7 +1124,7 @@ Pr (f_y = por | e_x = everywhere) = 0.33 Pr (f_y = todas | e_x = everywhere) = 0
 ****************************************************************
 Pr (f_y = alrededor | e_x = around) = 0.37 Pr (f_y = nuestro | e_x = around) = 0.25 Pr (f_y = Evidentemente | e_x = around) = 0.02 Pr (f_y = eso | e_x = around) = 0.02 Pr (f_y = detiene | e_x = around) = 0.06 Pr (f_y = andar | e_x = around) = 0.07 Pr (f_y = caminando | e_x = around) = 0.07 Pr (f_y = por | e_x = around) = 0.07 Pr (f_y = ahi | e_x = around) = 0.07 
 ****************************************************************
-Pr (f_y = Dije | e_x = said) = 0.46 Pr (f_y = que | e_x = said) = 0.17 Pr (f_y = ! | e_x = said) = 0.18 Pr (f_y = BIEN | e_x = said) = 0.02 Pr (f_y = Dijo | e_x = said) = 0.17 
+Pr (f_y = Dije | e_x = said) = 0.46 Pr (f_y = que | e_x = sai = 0.17 Pr (f_y = ! | e_x = said) = 0.18 Pr (f_y = BIEN | e_x = said) = 0.02 Pr (f_y = Dijo | e_x = said) = 0.17 
 ****************************************************************
 Pr (f_y = Porque | e_x = aren') = 0.05 Pr (f_y = no | e_x = aren') = 0.09 Pr (f_y = están | e_x = aren') = 0.43 Pr (f_y = muriendo | e_x = aren') = 0.43 
 ****************************************************************
