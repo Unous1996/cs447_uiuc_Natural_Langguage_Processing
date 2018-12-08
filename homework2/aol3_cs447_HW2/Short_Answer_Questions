@@ -1,0 +1,31 @@
+Q1:Describe how your grammar analyzes noun phrases.
+============================================================
+Basically there are two types of noun pharse, the first is the proper noun phrases, which is composed by proper noums and connections(word "and" and commas). The second is the noun phares whihc begins with a nonproper noun. One of the big differences is that the second one can be modified by "Noun_Modifier" while the first one cannot.
+
+For noun phrases(prpoper and nonproper), I just defined them as an array of nouns. For noun modifiers, I just definied them as a consecutive of adjectives(might be modified by adverbs). I also regarded processive expressions as modifiers. For examples,(in the noun pharse "today's news", "today's" is a modifier).
+
+A single determinent was also treated as a noun pharse, becasue sometimes the word "all" might itself be the subject of the sentence. For example, "All came from Cray Research".
+
+A noun pharse can also be composed by a noun pharse and a prep pharse.
+
+Q2:Describe how your grammar analyzes verb phrases
+============================================================
+For verbs, I defined the following four rules for convenience.
+"
+To_Verb -> TO VB | TO VBD | TO VBG | TO VBP
+Mood_Verb -> MD VB
+Have_Had -> VBZ | VBD
+Normal_Single_Verb -> VBZ | VBD | VB | VBG | VBN | VBP
+"
+The first one is infinitive, and the second one is for the mood verb The third one is for handling the perfect tense and passive voice. And the rest one is for all single verbs.
+
+The the composition of the core part of the verb might be composed by a signle verb, or by multiple consicutive verbs due to the tense of the verbs(e.g. for present perfect continuous tense "have been doing", there are three verbs, and the last one must be VBG).
+
+The core part of the verb can be modified by adverbs either at the front or in the end or by adding to(I want to eat) or to_verb("The child began to cry").
+
+The verb_pharse can be composed by either a single verb pharse or a verb pharse and a prep pharse. Note that I did not have the rule "verb_pharse -> verb_pharse noun_pharse" I did that in the sentences.
+
+Q3:Which sentence has the most parses (please include the number of parses)? What about the sentences (besides their length) contributes to the large number of parses?
+====================================================
+SUCCESS (12 parses)           France can boast the lion 's share of high-priced bottles .
+The main reason is that it has a really long noun pharse "the lion 's share of high-priced bottles". And we can "cut" it in multiple ways.
